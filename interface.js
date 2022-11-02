@@ -1,21 +1,21 @@
-$(function() {
-    $(function() {
+$(function () {
+    $(function () {
         $("#event-name").focus();
     });
 
-    $( "#event-start-date" ).datetimepicker();
-    $( "#event-end-date" ).datetimepicker();
+    $("#event-start-date").datetimepicker();
+    $("#event-end-date").datetimepicker();
     $("#all-day-event-date").datetimepicker({
         timepicker: false,
-        onChangeDateTime: function(dp, $input) {
+        onChangeDateTime: function (dp, $input) {
             var datetime = $input.val();
             var date = datetime.split(" ")[0];
             $input.val(date);
         }
     });
-    $( "#recurrent-event-end-date" ).datetimepicker();
+    $("#recurrent-event-end-date").datetimepicker();
 
-    $('#all-day-event-checkbox').change(function() {
+    $('#all-day-event-checkbox').change(function () {
         if (this.checked) {
             showAllDayEventOptions();
         } else {
@@ -23,11 +23,11 @@ $(function() {
         }
     });
 
-    $('#recurrent-event-type-selector').change(function() {
+    $('#recurrent-event-type-selector').change(function () {
         var val = $("#recurrent-event-type-selector option:selected").val();
         hideRecurrentEventOptions();
         hideRecurrentEventDetails();
-        
+
         if (val == "custom") {
             showRecurrentEventOptions();
         } else {
@@ -41,7 +41,7 @@ $(function() {
         }
     });
 
-    $('#recurrent-event-time-selector').change(function() {
+    $('#recurrent-event-time-selector').change(function () {
         var val = $("#recurrent-event-time-selector option:selected").val();
         hideRecurrentEventDetails();
 
@@ -56,9 +56,17 @@ $(function() {
         }
     });
 
-    $('input[type=text]').focus(function() { 
-        $(this).select(); 
+    $('input[type=text]').focus(function () {
+        $(this).select();
     });
+
+    $(function () {
+        $('#reset-event-button').click(function () {
+            clearValues()
+        });
+    });
+
+
 });
 
 // Functions to reset recurrent event interface
@@ -106,4 +114,20 @@ function hideRecurrentEventEndDetails() {
 function hideAndShowCreateEventButtom() {
     $('#create-event-button').hide();
     $('#create-event-button').show();
+}
+
+function clearValues() {
+    $('#event-name').val('');
+    $('#event-location').val('');
+    $("#all-day-event-checkbox").prop("checked", false);
+    $('#event-start-date').val('');
+    $('#event-end-date').val('');
+    $('#all-day-event-date').val('');
+    $('#recurrent-event-type-selector').val('none');
+    hideRecurrentEventDetails();
+    hideRecurrentEventOptions();
+    resetAllRecurrentEventDetails();
+    hideAllDayEventOptions();
+    hideRecurrentEventEndDetails();
+    $('#new-event-text').text('');
 }
