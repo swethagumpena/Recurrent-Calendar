@@ -7,8 +7,8 @@
 // New Event Creation
 /////////////////////////////////////////////////////////////////////////////
 
-$(function() {
-	$('#create-event-button').click(function() {
+$(function () {
+	$('#create-event-button').click(function () {
 		if (checkInputs()) {
 			writeEventToScreen(getEventText());
 		}
@@ -19,7 +19,7 @@ $(function() {
 function isValidEndTime() {
 	var startTime = $('#event-start-date').datetimepicker('getValue');
 	var endTime = $('#event-end-date').datetimepicker('getValue');
-    return !(endTime < startTime);
+	return !(endTime < startTime);
 }
 function checkInputs() {
 	if (!isValidEndTime()) {
@@ -41,7 +41,7 @@ function checkInputs() {
 function getWeeklyRepeatingDays() {
 	var days = [];
 
-	var weekdayIds = ['#weekday-sun', '#weekday-mon', '#weekday-tue', '#weekday-wed', '#weekday-thu', '#weekday-fri', 
+	var weekdayIds = ['#weekday-sun', '#weekday-mon', '#weekday-tue', '#weekday-wed', '#weekday-thu', '#weekday-fri',
 		'#weekday-sat'];
 	var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	for (i = 0; i < weekdayIds.length; i++) {
@@ -61,7 +61,7 @@ function getMonthlyRepeatingDays() {
 		'#month-25', '#month-26', '#month-27', '#month-28', '#month-29', '#month-30', '#month-31'];
 	for (i = 0; i < monthdayIds.length; i++) {
 		if ($(monthdayIds[i]).is(':checked')) {
-			days.push(i+1);
+			days.push(i + 1);
 		}
 	}
 
@@ -70,7 +70,7 @@ function getMonthlyRepeatingDays() {
 function getYearlyRepeatingMonths() {
 	var months = [];
 
-	var monthIds = ['#year-jan', '#year-feb', '#year-mar', '#year-apr', '#year-may', '#year-jun', '#year-jul', 
+	var monthIds = ['#year-jan', '#year-feb', '#year-mar', '#year-apr', '#year-may', '#year-jun', '#year-jul',
 		'#year-aug', '#year-sept', '#year-oct', '#year-nov', '#year-dec'];
 	var monthsNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 	for (i = 0; i < monthIds.length; i++) {
@@ -84,35 +84,35 @@ function getYearlyRepeatingMonths() {
 
 function getWeeklyRepeatingString(arr) {
 	var eventString = 'on every ';
-	for (i = 0; i < arr.length-1; i++) {
+	for (i = 0; i < arr.length - 1; i++) {
 		eventString += arr[i] + ', ';
 	}
 	if (arr.length > 1) {
 		eventString += 'and ';
 	}
-	eventString += arr[arr.length-1] + ' of the week ';
+	eventString += arr[arr.length - 1] + ' of the week ';
 	return eventString;
 }
 function getMonthlyRepeatingString(arr) {
 	var eventString = 'on the ';
-	for (i = 0; i < arr.length-1; i++) {
+	for (i = 0; i < arr.length - 1; i++) {
 		eventString += arr[i] + ', ';
 	}
 	if (arr.length > 1) {
 		eventString += 'and ';
 	}
-	eventString += arr[arr.length-1] + ' of the month ';
+	eventString += arr[arr.length - 1] + ' of the month ';
 	return eventString;
 }
 function getYearlyRepeatingString(arr) {
 	var eventString = 'in ';
-	for (i = 0; i < arr.length-1; i++) {
+	for (i = 0; i < arr.length - 1; i++) {
 		eventString += arr[i] + ', ';
 	}
 	if (arr.length > 1) {
 		eventString += 'and ';
 	}
-	eventString += arr[arr.length-1] + ' on the corresponding day of the month(s) ';
+	eventString += arr[arr.length - 1] + ' on the corresponding day of the month(s) ';
 	return eventString;
 }
 
