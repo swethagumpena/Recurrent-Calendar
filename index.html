@@ -27,12 +27,15 @@
     <div id="container">
       <div id="content">
         <div class="card col-lg-4">
-          <input
-            id="event-name"
-            class="title col-md-12"
-            type="text"
-            placeholder="New Event Name"
-          />
+          <div class="d-flex">
+            <input
+              id="event-name"
+              class="title col-md-12"
+              type="text"
+              placeholder="New Event Name"
+            />
+            <h4 class="text-danger">*</h4>
+          </div>
           <input
             id="event-location"
             class="col-md-12"
@@ -49,15 +52,36 @@
             </tr>
             <tr id="start-time-row">
               <td class="time-detail-name">starts:</td>
-              <td class=""><input id="event-start-date" type="text" /></td>
+              <td class="d-flex">
+                <input
+                  id="event-start-date"
+                  type="text"
+                  placeholder="YYYY/MM/DD HH:MM"
+                />
+                <h4 class="text-danger">*</h4>
+              </td>
             </tr>
             <tr id="end-time-row">
               <td class="time-detail-name">ends:</td>
-              <td class=""><input id="event-end-date" type="text" /></td>
+              <td class="d-flex">
+                <input
+                  id="event-end-date"
+                  type="text"
+                  placeholder="YYYY/MM/DD HH:MM"
+                />
+                <h4 class="text-danger">*</h4>
+              </td>
             </tr>
             <tr id="all-day-event-row" class="hidden">
               <td class="time-detail-name">date:</td>
-              <td class=""><input id="all-day-event-date" type="text" /></td>
+              <td class="d-flex">
+                <input
+                  id="all-day-event-date"
+                  type="text"
+                  placeholder="YYYY/MM/DD"
+                />
+                <h4 class="text-danger">*</h4>
+              </td>
             </tr>
 
             <!-- Event Repeat Details -->
@@ -77,8 +101,13 @@
             </tr>
             <tr id="recurrent-event-end-date-row" class="hidden">
               <td class="time-detail-name">end repeat:</td>
-              <td class="">
-                <input id="recurrent-event-end-date" type="text" />
+              <td class="d-flex">
+                <input
+                  id="recurrent-event-end-date"
+                  type="text"
+                  placeholder="YYYY/MM/DD HH:MM"
+                />
+                <h4 class="text-danger">*</h4>
               </td>
             </tr>
           </table>
@@ -312,15 +341,17 @@
         <div class="card col-lg-4 flex-lg-row">
           <button
             id="reset-event-button"
-            class="btn btn-secondary col-lg-3 mr-2"
+            class="btn col-lg-3 mr-2 btn-danger"
             type="button"
+            role="button"
           >
             Reset
           </button>
           <button
             id="create-event-button"
-            class="btn btn-secondary"
+            class="btn btn-success"
             type="button"
+            role="button"
           >
             Create Event
           </button>

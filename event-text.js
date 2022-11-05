@@ -21,26 +21,57 @@ function isValidEndTime() {
 	var endTime = $('#event-end-date').datetimepicker('getValue');
 	return !(endTime < startTime);
 }
+
+var missingValuesErrorMessage
+
+function doInputsHaveValue() {
+	missingValuesErrorMessage = ''
+	var elementsToCheck = ['#event-name', '#event-start-date', '#event-end-date', '#all-day-event-date', '#recurrent-event-end-date']
+	elementsToCheck.forEach((element) => {
+		if ($(element).is(":visible") && !$(element).val().length) {
+			$(element).css("border", "red 2px solid");
+			missingValuesErrorMessage = missingValuesErrorMessage + element.replace(/#|-/gi, ' ') + ','
+		}
+	})
+	return missingValuesErrorMessage.length
+}
+
 function checkInputs() {
+	if (doInputsHaveValue()) {
+		const constructedErrorMessage = `Please enter the ${missingValuesErrorMessage.replace(/,*$/, '')}`
+		$('#new-event-text').text(constructedErrorMessage);
+		$('#new-event-text').trigger('log', ['errorFeedbackShown', { 'error': true, 'message': constructedErrorMessage }]);
+		return false
+	}
+
 	if (!isValidEndTime()) {
-		writeEventToScreen('End date must come after start date.');
+		writeEventToScreen('End time must come after start time.');
+		$('#event-end-date').css("border", "red 2px solid");
+		$('#new-event-text').trigger('log', ['errorFeedbackShown', { 'error': true, 'message': 'End time must come after start time.' }]);
 		return false;
+	} else {
+		$('#event-end-date').css("border", "");
 	}
 
 	var frequency = $('#' + $('#recurrent-event-time-selector').val() + '-recurrent-freq').val();
-	console.log(frequency);
 	if (!$.isNumeric(frequency)) {
 		writeEventToScreen('Frequency must be a numeric value.');
+		$("[id*='-recurrent-freq']").css("border", "red 2px solid");
+		$('#new-event-text').trigger('log', ['errorFeedbackShown', { 'error': true, 'message': 'Frequency must be a numeric value.' }]);
 		return false;
+	} else {
+		$("[id*='-recurrent-freq']").css("border", "");
 	}
 
+	if ($('#new-event-text').text().includes('Please enter the')) {
+		$('#new-event-text').trigger('log', ['errorFeedbackRemoved', { 'error': false }]);
+	}
 	return true;
 }
 
 // Functions for building the event string
 function getWeeklyRepeatingDays() {
 	var days = [];
-
 	var weekdayIds = ['#weekday-sun', '#weekday-mon', '#weekday-tue', '#weekday-wed', '#weekday-thu', '#weekday-fri',
 		'#weekday-sat'];
 	var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -49,12 +80,10 @@ function getWeeklyRepeatingDays() {
 			days.push(weekdays[i]);
 		}
 	}
-
 	return days;
 }
 function getMonthlyRepeatingDays() {
 	var days = [];
-
 	var monthdayIds = ['#month-1', '#month-2', '#month-3', '#month-4', '#month-5', '#month-6', '#month-7', '#month-8',
 		'#month-9', '#month-10', '#month-11', '#month-12', '#month-13', '#month-14', '#month-15', '#month-16',
 		'#month-17', '#month-18', '#month-19', '#month-20', '#month-21', '#month-22', '#month-23', '#month-24',
@@ -64,12 +93,10 @@ function getMonthlyRepeatingDays() {
 			days.push(i + 1);
 		}
 	}
-
 	return days;
 }
 function getYearlyRepeatingMonths() {
 	var months = [];
-
 	var monthIds = ['#year-jan', '#year-feb', '#year-mar', '#year-apr', '#year-may', '#year-jun', '#year-jul',
 		'#year-aug', '#year-sept', '#year-oct', '#year-nov', '#year-dec'];
 	var monthsNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -78,7 +105,6 @@ function getYearlyRepeatingMonths() {
 			months.push(monthsNames[i]);
 		}
 	}
-
 	return months;
 }
 
@@ -116,13 +142,11 @@ function getYearlyRepeatingString(arr) {
 	return eventString;
 }
 
-
-
 function getEventText() {
 	var eventName = $('#event-name').val();
 	var eventLocation = $('#event-location').val();
 
-	var eventString = 'Event created: ' + eventName + ' at ' + eventLocation + ', ';
+	var eventString = `Event created: ${eventName}${eventLocation.length ? ` at ${eventLocation}` : ''}, '`;
 
 	var allDayEvent = $('#all-day-event-checkbox').is(':checked');
 	if (allDayEvent) {
@@ -167,7 +191,6 @@ function getEventText() {
 			eventString += ', ' + 'repeating every ' + frequency + ' year(s) ' + getYearlyRepeatingString(repeatingUnits);
 		}
 	}
-
 	var endDate = $('#recurrent-event-end-date').datetimepicker('getValue');
 	eventString += 'until ' + endDate + '.';
 	return eventString;

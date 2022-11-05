@@ -17,7 +17,7 @@ var LOG_VERSION = 'B';             // Labels every entry with version: "B".
 // These event types are intercepted for logging before jQuery handlers.
 var EVENT_TYPES_TO_LOG = {
   mousedown: true,
-  keydown: true
+  keydown: true,
 };
 
 // These event properties are copied to the log if present.
@@ -100,7 +100,7 @@ var GLOBAL_STATE_TO_LOG = function () {
     return '?';
   }
 
-  // Genrates or remembers a somewhat-unique ID with distilled user-agent info.
+  // Generates or remembers a somewhat-unique ID with distilled user-agent info.
   function getUniqueId() {
     if (!('uid' in localStorage)) {
       var browser = findFirstString(navigator.userAgent, [

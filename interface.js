@@ -4,7 +4,16 @@ $(function () {
     });
 
     $("#event-start-date").datetimepicker();
-    $("#event-end-date").datetimepicker();
+    $("#event-end-date").datetimepicker({
+        onShow: function () {
+            this.setOptions({
+                minDate: $("#event-start-date").val(),
+            })
+        },
+        onChangeDateTime: function () {
+            $('#event-end-date').css("border", "");
+        }
+    });
     $("#all-day-event-date").datetimepicker({
         timepicker: false,
         onChangeDateTime: function (dp, $input) {
@@ -13,7 +22,22 @@ $(function () {
             $input.val(date);
         }
     });
-    $("#recurrent-event-end-date").datetimepicker();
+    $("#recurrent-event-end-date").datetimepicker({
+        onShow: function () {
+            if ($('#event-start-date').is(":visible")) {
+                this.setOptions({
+                    minDate: $("#event-start-date").val(),
+                })
+            } else if ($('#all-day-event-date').is(":visible")) {
+                this.setOptions({
+                    minDate: $("#all-day-event-date").val(),
+                })
+            }
+        },
+        onChangeDateTime: function () {
+            $('#recurrent-event-end-date').css("border", "");
+        }
+    });
 
     $('#all-day-event-checkbox').change(function () {
         if (this.checked) {
@@ -54,10 +78,58 @@ $(function () {
         } else if (val == "yearly") {
             $('#yearly-recurrent-details').show();
         }
+        $("[id*='-recurrent-freq']").val('1');
+        $("[id*='-recurrent-freq']").css("border", "");
+        $('#new-event-text').text('');
+        $('#new-event-text').trigger('log', ['errorFeedbackRemoved', { 'error': false }]);
     });
 
     $('input[type=text]').focus(function () {
         $(this).select();
+    });
+
+    $("[id*='-recurrent-freq']").on("input", function () {
+        $("[id*='-recurrent-freq']").css("border", "");
+        if ($('#new-event-text').text() === 'Frequency must be a numeric value.') {
+            $('#new-event-text').trigger('log', ['errorFeedbackRemoved', { 'error': false }]);
+            $('#new-event-text').text('');
+        }
+    });
+
+    $("#event-name").on("input", function () {
+        $("#event-name").css("border", "");
+    })
+
+    $("#event-start-date").datetimepicker({
+        onSelect: function (dateText) {
+            $(this).change();
+        }
+    }).on("change", function () {
+        $("#event-start-date").css("border", "");
+    });
+
+    $("#event-end-date").datetimepicker({
+        onSelect: function (dateText) {
+            $(this).change();
+        }
+    }).on("change", function () {
+        $("#event-end-date").css("border", "");
+    });
+
+    $("#all-day-event-date").datetimepicker({
+        onSelect: function (dateText) {
+            $(this).change();
+        }
+    }).on("change", function () {
+        $("#all-day-event-date").css("border", "");
+    });
+
+    $("#recurrent-event-end-date").datetimepicker({
+        onSelect: function (dateText) {
+            $(this).change();
+        }
+    }).on("change", function () {
+        $("#recurrent-event-end-date").css("border", "");
     });
 
     $(function () {
@@ -65,8 +137,6 @@ $(function () {
             clearValues()
         });
     });
-
-
 });
 
 // Functions to reset recurrent event interface
@@ -119,15 +189,28 @@ function hideAndShowCreateEventButtom() {
 function clearValues() {
     $('#event-name').val('');
     $('#event-location').val('');
+
     $("#all-day-event-checkbox").prop("checked", false);
+
     $('#event-start-date').val('');
     $('#event-end-date').val('');
     $('#all-day-event-date').val('');
+
     $('#recurrent-event-type-selector').val('none');
+
     hideRecurrentEventDetails();
     hideRecurrentEventOptions();
     resetAllRecurrentEventDetails();
     hideAllDayEventOptions();
     hideRecurrentEventEndDetails();
+
     $('#new-event-text').text('');
+    $('#event-name').css("border", "");
+    $('#event-start-date').css("border", "");
+    $('#event-end-date').css("border", "");
+    $('#all-day-event-date').css("border", "");
+    $('#recurrent-event-end-date').css("border", "");
+
+    $("[id*='-recurrent-freq']").val('1');
+    $("[id*='-recurrent-freq']").css("border", "");
 }
