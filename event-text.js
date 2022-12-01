@@ -11,7 +11,16 @@ $(function () {
 	$('#create-event-button').click(function () {
 		if (checkInputs()) {
 			writeEventToScreen(getEventText());
+			$(".event-form").attr('disabled', true);
+			$("#start-event-button").attr('disabled', false);
+			$('#create-event-button').trigger('log', ['eventEnd', { 'what': 'Event created' }]);
 		}
+	});
+
+	$('#start-event-button').click(function () {
+		$(".event-form").attr('disabled', false);
+		$("#start-event-button").attr('disabled', true);
+		$('#start-event-button').trigger('log', ['eventStart', { 'what': 'New event started' }]);
 	});
 });
 

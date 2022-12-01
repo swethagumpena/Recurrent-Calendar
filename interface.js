@@ -3,6 +3,11 @@ $(function () {
         $("#event-name").focus();
     });
 
+    $(".event-form").attr('disabled', true);
+    $('#start-event-button').click(function () {
+        clearValues()
+    });
+
     $("#event-start-date").datetimepicker();
     $("#event-end-date").datetimepicker({
         onShow: function () {
